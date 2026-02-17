@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tristan Stahnke - DevSecOps, Cloud, GenAI &amp; Security</title>
+    <meta name="description" content="DevSecOps. Cloud Architecture. Generative AI. Security. Building secure systems and exploring what's next.">
+    <meta name="author" content="Tristan Stahnke">
+    <meta property="og:title" content="Tristan Stahnke">
+    <meta property="og:description" content="DevSecOps. Cloud Architecture. Generative AI. Security.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tstahnke.com">
+    <meta property="og:image" content="https://tstahnke.com/images/cover.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0b;
+            --bg-elevated: #131315;
+            --bg-subtle: #1a1a1e;
+            --text-primary: #e8e8ed;
+            --text-secondary: #8a8a96;
+            --text-muted: #55555f;
+            --accent: #6e8cf7;
+            --accent-dim: rgba(110, 140, 247, 0.12);
+            --border: #1f1f24;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ---- NAV ---- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease, backdrop-filter 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 11, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+        }
+
+        .nav-logo span {
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 400;
+            transition: color 0.2s ease;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links .github-link {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-links .github-link svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* ---- HERO ---- */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 68%;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(10, 10, 11, 0.3) 0%,
+                    rgba(10, 10, 11, 0.1) 35%,
+                    rgba(10, 10, 11, 0.5) 60%,
+                    rgba(10, 10, 11, 0.8) 75%,
+                    rgba(10, 10, 11, 0.95) 100%
+                );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+            padding-bottom: 4rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1.25rem;
+            text-shadow:
+                0 1px 3px rgba(0, 0, 0, 0.8),
+                0 2px 12px rgba(0, 0, 0, 0.6),
+                0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero .tagline {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            text-shadow:
+                0 1px 4px rgba(0, 0, 0, 0.9),
+                0 2px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero .subtitle {
+            font-size: 1.125rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 540px;
+            text-shadow:
+                0 1px 3px rgba(0, 0, 0, 0.8),
+                0 2px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: pulse-down 2s ease-in-out infinite;
+        }
+
+        .scroll-hint::after {
+            content: '';
+            width: 1px;
+            height: 32px;
+            background: linear-gradient(to bottom, var(--text-muted), transparent);
+        }
+
+        @keyframes pulse-down {
+            0%, 100% { opacity: 0.4; transform: translateY(0); }
+            50% { opacity: 0.8; transform: translateY(4px); }
+        }
+
+        /* ---- SECTIONS ---- */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .section-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        /* ---- ABOUT ---- */
+        .about {
+            border-top: 1px solid var(--border);
+        }
+
+        .about p {
+            font-size: 1.0625rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .about p strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* ---- INTERESTS ---- */
+        .interests {
+            border-top: 1px solid var(--border);
+        }
+
+        .interest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .interest-card {
+            background: var(--bg-elevated);
+            padding: 1.75rem;
+            transition: background 0.2s ease;
+        }
+
+        .interest-card:hover {
+            background: var(--bg-subtle);
+        }
+
+        .interest-card h3 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .interest-card p {
+            font-size: 0.825rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* ---- FOOTER ---- */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+        }
+
+        .footer-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copy {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* ---- ANIMATIONS ---- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 640px) {
+            nav {
+                padding: 1rem 1.25rem;
+            }
+
+            .nav-links {
+                gap: 1.25rem;
+            }
+
+            .hero {
+                padding: 1.25rem;
+            }
+
+            .hero-content {
+                padding-bottom: 3rem;
+            }
+
+            section {
+                padding: 4rem 1.25rem;
+            }
+
+            .interest-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .scroll-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="nav">
+        <a href="/" class="nav-logo">tstahnke<span>.com</span></a>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#interests">Focus</a></li>
+            <li>
+                <a href="https://github.com/tstahnke" target="_blank" rel="noopener noreferrer" class="github-link">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg">
+            <img src="images/cover.jpg" alt="Cover" loading="eager">
+        </div>
+        <div class="hero-content">
+            <p class="tagline">DevSecOps / Cloud / GenAI / Security</p>
+            <h1>Tristan Stahnke</h1>
+            <p class="subtitle">
+                Building secure systems, exploring generative AI, and writing code 
+                that matters. Coder, engineer, dad.
+            </p>
+        </div>
+        <div class="scroll-hint">scroll</div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="section-inner fade-in">
+            <p class="section-label">About</p>
+            <p>
+                I work at the intersection of <strong>cloud infrastructure</strong>, 
+                <strong>security</strong>, and <strong>developer experience</strong>. 
+                My focus is on building systems that are secure by default, 
+                automated where it counts, and simple enough that teams actually 
+                want to use them.
+            </p>
+            <p>
+                I've spent years in the Azure ecosystem, from cloud architecture 
+                and DevOps pipelines to threat modeling and security tooling. More 
+                recently, I've been deep in the <strong>generative AI</strong> space, 
+                exploring how LLMs can augment engineering workflows, improve security 
+                posture, and create new kinds of developer tools.
+            </p>
+            <p>
+                When I'm not building, I'm usually playing video games with my 
+                kids or tinkering with something that probably doesn't need 
+                tinkering with.
+            </p>
+        </div>
+    </section>
+
+    <!-- Interests / Focus Areas -->
+    <section class="interests" id="interests">
+        <div class="section-inner fade-in">
+            <p class="section-label">Focus Areas</p>
+            <div class="interest-grid">
+                <div class="interest-card">
+                    <h3>DevSecOps</h3>
+                    <p>Shifting security left. Automated scanning, policy-as-code, and secure CI/CD pipelines.</p>
+                </div>
+                <div class="interest-card">
+                    <h3>Cloud Architecture</h3>
+                    <p>Azure-native design, infrastructure as code, and scalable platform engineering.</p>
+                </div>
+                <div class="interest-card">
+                    <h3>Generative AI</h3>
+                    <p>LLM integration, AI-assisted development, prompt engineering, and agentic workflows.</p>
+                </div>
+                <div class="interest-card">
+                    <h3>Security</h3>
+                    <p>Threat modeling, identity and access, zero trust architecture, and security automation.</p>
+                </div>
+                <div class="interest-card">
+                    <h3>Developer Tools</h3>
+                    <p>CLI tooling, developer experience, automation, and making complex things feel simple.</p>
+                </div>
+                <div class="interest-card">
+                    <h3>Open Source</h3>
+                    <p>Contributing to and building tools that solve real problems for real engineers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <p class="footer-copy">&copy; 2025 Tristan Stahnke</p>
+            <div class="footer-links">
+                <a href="https://github.com/tstahnke" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar background on scroll
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Fade-in on scroll
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            },
+            { threshold: 0.15 }
+        );
+
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+    </script>
+
+</body>
+</html>

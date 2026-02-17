@@ -1,0 +1,13 @@
+# Source images (large, not needed for deploy)
+images/IMG_3807.JPG
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# SRA
+.sra/
